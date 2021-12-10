@@ -23,3 +23,15 @@ img {
     padding: auto;
     margin: 10px;
 }
+
+.btn-nombre {
+    text-decoration: none;
+}
+
+.btn-nombre:hover{
+    cursor: pointer;
+}
+
+.img-h:hover{
+    cursor: pointer;
+}
