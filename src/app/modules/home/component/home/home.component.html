@@ -2,7 +2,7 @@
 <br>
 <div class="cat alinea d-inline-flex">
     <select class="cat form-control" formControlName="id_category" id="id_category" (change)="muestraCategoria($any($event.target).value)">
-        <option value="0">Todos los productos</option>
+        <option value=0>Todos los productos</option>
         <option  *ngFor="let category of categories" [value]="category.id_category">{{ category.category }}</option>
     </select>
 </div>
@@ -20,8 +20,11 @@
             <div *ngFor="let product of rproducts" class="col mb-5">
                 <div  class="card h-100">
                     <!-- Product image-->
-                    <a class="img-h card img-top" routerLink="" (click)="productDetail(product.product,product.images,product.price,product.gtin)">
-                        <img class="card-img-top" src="assets/{{product.images[0].image}}" alt="..." />
+                    <a class="img-h card img-top" routerLink="" (click)="productDetail(product.product,product.images,product.price,product.gtin)">                   
+                      <img *ngIf="product.images.length!=0; else noFoto" class="card-img-top" src="assets/{{product.images[0].image}}" alt="..." />  
+                      <ng-template #noFoto>
+                        <img class="card-img-top" src="assets/no-photo.png" alt="..." /> 
+                      </ng-template>
                     </a>                       
                     <!-- Product details-->
                     <div class="card-body p-4">
@@ -31,7 +34,7 @@
                                 <h5 class="fw-bolder">{{ product.product}}</h5>
                             </a>
                             <!-- Product price-->
-                           $ {{ product.price }}
+                           ${{ product.price }}
                         </div>
                     </div>
                     <!-- Product actions-->

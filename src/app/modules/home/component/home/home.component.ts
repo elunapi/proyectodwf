@@ -81,7 +81,11 @@ export class HomeComponent implements OnInit {
     this.imagenes = images;
     this.precioProducto = precio;
     this.gtin = gtin;
-    this.rutaImg = images[0].image;
+    if (this.imagenes.length == 0){
+      this.rutaImg = "no-photo.png"
+    }else{
+      this.rutaImg = images[0].image;
+    }
     this.prod_serv.getProduct(gtin).subscribe(
       res => {
         this.producto = res;
