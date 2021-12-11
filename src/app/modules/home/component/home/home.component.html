@@ -2,7 +2,7 @@
 <br>
 <div class="cat alinea d-inline-flex">
     <select class="cat form-control" formControlName="id_category" id="id_category" (change)="muestraCategoria($any($event.target).value)">
-        <option value=0>Todos los productos</option>
+        <option [value]=0>Todos los productos</option>
         <option  *ngFor="let category of categories" [value]="category.id_category">{{ category.category }}</option>
     </select>
 </div>
