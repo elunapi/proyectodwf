@@ -6,10 +6,13 @@ import { ProductImage } from 'src/app/modules/product/_model/productImage';
 import { CategoryService } from 'src/app/modules/product/_service/category.service';
 import { ProductService } from 'src/app/modules/product/_service/product.service';
 import { ProductRandom } from '../../_model/ProductRandom';
+import { CartService } from '../../_service/cart.service';
 import { CategoryProductsService } from '../../_service/category-products.service';
 import { RandomProductsService } from '../../_service/random-products.service';
 
 declare var $: any;
+
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home',
@@ -29,12 +32,15 @@ export class HomeComponent implements OnInit {
   descripcion: string = "";
   producto: Product = new Product();
   categoria: string = "";
+  rfc: string = "SAIV920101A00";
+  productAdded: any = {};
 
   constructor(
     private product_service: RandomProductsService,
     private category_service: CategoryService,
     private category_product_service: CategoryProductsService,
     private prod_serv: ProductService,
+    private cart_service: CartService,
     private router: Router
   ) { }
 
@@ -70,7 +76,7 @@ export class HomeComponent implements OnInit {
     this.category_product_service.getProducts(id).subscribe(
       res => {
         this.rproducts = res;
-        console.log(res)
+        //console.log(res)
       },
       err => console.log(err)
     )
@@ -94,7 +100,7 @@ export class HomeComponent implements OnInit {
       },
       err => console.log(err)
     )
-    console.log(this.producto.id_category)
+    //console.log(this.producto.id_category)
     $(".py-5").hide();
     $(".cat").hide();
     $(".btn-back").show();
@@ -107,6 +113,39 @@ export class HomeComponent implements OnInit {
     $(".btn-back").hide();
     $(".product-detail").hide();
   }
-
+  
+  addToCart(){
+    console.log(this.producto.id_product)
+    console.log($("#cantidad").val())
+    this.productAdded = { "id_product": this.producto.id_product, "quantity": parseInt($("#cantidad").val()), "rfc": this.rfc};
+    console.log(this.productAdded)
+    if(parseInt($("#cantidad").val())>this.producto.stock){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'No hay suficiente stock de este producto',
+      })
+    }else{
+      this.cart_service.addToCart(this.productAdded).subscribe(
+        res => {
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Producto agregado al carrito!',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        },
+        err => { 
+          console.log(err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'No hay suficiente stock de este producto',
+          })
+        }
+      )
+    }
+  }
 
 }

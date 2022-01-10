@@ -39,7 +39,7 @@
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-agrega btn-outline-dark mt-auto" href="#">Agregar al Carrito</a></div>
+                        <div class="text-center"><a class="btn btn-agrega btn-outline-dark mt-auto" (click)="productDetail(product.product,product.images,product.price,product.gtin)">Ver detalles</a></div>
                     </div>
                 </div>
             </div>   
@@ -85,7 +85,10 @@
           </table>
         </div>
         <hr>
-        <button type="button" class="btn btn-light btn-md mr-1 mb-2"><i
+        Cantidad:&nbsp;
+        <input id="cantidad" type="number" name="quantity" min="1" max="20" value="1" onKeyDown="return false">
+        &nbsp;
+        <button (click)="addToCart()" type="button" class="btn btn-light btn-md mr-1 mb-2"><i
             class="fas fa-shopping-cart pr-2"></i> Añadir al carrito</button>
       </div>
     </div>
