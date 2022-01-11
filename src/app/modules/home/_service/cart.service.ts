@@ -19,7 +19,11 @@ export class CartService {
   }
 
   getCart(rfc: string){
-    return this.http.get(this.apiURI+this.resource+"/"+rfc)
+    return this.http.get(this.apiURI + this.resource+ "/" +rfc)
+  }
+
+  deleteProductFromCart(id_cart: number){
+    return this.http.delete(this.apiURI + this.resource + `/${id_cart}`);
   }
 
 }
