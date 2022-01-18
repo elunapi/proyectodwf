@@ -6,6 +6,7 @@ import { CustomerComponent } from './modules/customer/component/customer/custome
 import { RegionComponent } from './modules/customer/component/region/region.component';
 import { CartComponent } from './modules/home/component/cart/cart.component';
 import { HomeComponent } from './modules/home/component/home/home.component';
+import { InvoiceComponent } from './modules/home/component/invoice/invoice.component';
 import { CategoryComponent } from './modules/product/component/category/category.component';
 
 const routes: Routes = [
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path: "category", component: CategoryComponent},
   {path: "customer", component: CustomerComponent},
   {path: "customer-detail/:rfc", component: CustomerDetailComponent},
-  {path: "cart", component: CartComponent}
+  {path: "cart", component: CartComponent},
+  {path: "invoice", component: InvoiceComponent}
 ];
 
 @NgModule({

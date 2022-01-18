@@ -3,7 +3,10 @@ import { CartService } from '../../_service/cart.service';
 import { ApisURI } from 'src/app/shared/apis-uri';
 import { Cart } from '../../_model/Cart';
 
+declare var $: any;
+
 import Swal from 'sweetalert2';
+import { InvoiceService } from '../../_service/invoice.service';
 
 @Component({
   selector: 'app-cart',
@@ -17,7 +20,8 @@ export class CartComponent implements OnInit {
   total: number;
 
   constructor(
-    private cart_service: CartService
+    private cart_service: CartService,
+    private invoice_service: InvoiceService
   ) {
     this.subtotal = 0;
     this.total = 0;
@@ -31,7 +35,6 @@ export class CartComponent implements OnInit {
     this.cart_service.getCart(ApisURI.rfc).subscribe(
       res => {
         this.carrito = <Cart[]>res;
-        console.log(this.carrito[0].id_product)
         this.calculaPrecio();
       },
       err => console.log(err)
@@ -46,6 +49,68 @@ export class CartComponent implements OnInit {
     this.total = this.subtotal;
   }
 
+  muestraPago(){
+    $("#campoCardNumber").css("color","black");
+    $("#campoCVV").css("color","black");
+    $("#campoExpDate").css("color","black");
+    $("#campoTitular").css("color","black");
+    $("#staticBackdrop").modal("show");
+  }
+
+  closeModal(){
+    $("#staticBackdrop").modal("hide");
+  }
+
+  pagar(){
+    var registra = true
+    if($("#cvv").val().length<3){
+      $("#campoCVV").css("color","red");
+      registra = false
+    }else{
+      $("#campoCVV").css("color","black");
+    }
+    if($("#txt_cardNumber").val().length<16){
+      $("#campoCardNumber").css("color","red");
+      registra = false
+    }else{
+      $("#campoCardNumber").css("color","black");
+    }
+    if($("#expDate").val().length<4){
+      $("#campoExpDate").css("color","red");
+      registra = false
+    }else{
+      $("#campoExpDate").css("color","black");
+    }
+    if($("#titular").val().length<1){
+      $("#campoTitular").css("color","red");
+      registra = false
+    }else{
+      $("#campoTitular").css("color","black");
+    }
+
+    if(registra){
+      this.invoice_service.purchase().subscribe(
+        res => {
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Compra exitosa!',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          this.closeModal()
+          this.getCart()
+        },
+        err => console.log(err)
+      )
+    }else{
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Hay información inválida en uno o más campos!',
+      })
+    }
+  }
   deleteProductFromCart(id_cart: number){
     Swal.fire({
       title: 'Deseas eliminar el producto?',

@@ -76,7 +76,6 @@ export class HomeComponent implements OnInit {
     this.category_product_service.getProducts(id).subscribe(
       res => {
         this.rproducts = res;
-        //console.log(res)
       },
       err => console.log(err)
     )
@@ -100,7 +99,6 @@ export class HomeComponent implements OnInit {
       },
       err => console.log(err)
     )
-    //console.log(this.producto.id_category)
     $(".py-5").hide();
     $(".cat").hide();
     $(".btn-back").show();
@@ -115,10 +113,7 @@ export class HomeComponent implements OnInit {
   }
   
   addToCart(){
-    console.log(this.producto.id_product)
-    console.log($("#cantidad").val())
     this.productAdded = { "id_product": this.producto.id_product, "quantity": parseInt($("#cantidad").val()), "rfc": this.rfc};
-    console.log(this.productAdded)
     if(parseInt($("#cantidad").val())>this.producto.stock){
       Swal.fire({
         icon: 'error',
